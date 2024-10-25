@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Message Board</title>
+  <style>
+    /* Basic styling */
+    body { font-family: Arial, sans-serif; text-align: center; }
+    #messages { margin-top: 20px; }
+    p { padding: 5px; border-bottom: 1px solid #ddd; }
+  </style>
+</head>
+<body>
+  <h1>Message Board</h1>
+  <form id="messageForm">
+    <input type="text" id="name" placeholder="Your Name" required><br><br>
+    <textarea id="message" placeholder="Your Message" required></textarea><br><br>
+    <button type="button" onclick="submitMessage()">Send</button>
+  </form>
+
+  <div id="messages"></div>
+
+  <script>
+    // Function to submit a message
+    function submitMessage() {
+      const name = document.getElementById('name').value;
+      const message = document.getElementById('message').value;
+
+      // Save message to local storage
+      const messages = JSON.parse(localStorage.getItem('messages')) || [];
+      messages.push({ name, message });
+      localStorage.setItem('messages', JSON.stringify(messages));
+
+      loadMessages(); // Refresh messages after submitting
+    }
+
+    // Function to load messages from local storage
+    function loadMessages() {
+      const messagesDiv = document.getElementById('messages');
+      messagesDiv.innerHTML = ''; // Clear existing messages
+      
+      const messages = JSON.parse(localStorage.getItem('messages')) || [];
+      messages.forEach(msg => {
+        const messageElement = `<p><strong>${msg.name}:</strong> ${msg.message}</p>`;
+        messagesDiv.innerHTML += messageElement;
+      });
+    }
+
+    // Load messages when the page loads
+    loadMessages();
+  </script>
+</body>
+</html>
+\
